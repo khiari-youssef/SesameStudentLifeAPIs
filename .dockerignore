@@ -1,6 +1,0 @@
-.git
-.env
-/dist
-/node_modules
-/build
-.gitignore
