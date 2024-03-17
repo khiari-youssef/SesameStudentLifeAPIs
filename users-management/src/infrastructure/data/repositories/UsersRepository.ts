@@ -1,9 +1,13 @@
 import {UsersRepositoryContract} from "./UsersRepositoryContract";
 import {Injectable} from "@nestjs/common";
 import {SesameUser, UserSex} from "../../../domain/entities/SesameUser";
-import {SesameRole, StudentRole} from "../../../domain/entities/SesameRole";
 import {DomainError, DomainErrorType} from "../../../domain/exceptions/DomainError";
-import {SesameStudent} from "../../../domain/entities/SesameStudent";
+import {
+    SesamePermissions,
+    SesamePermissionState,
+    SesameRole,
+    SesameRoleType
+} from "../../../domain/entities/SesameRole";
 
 
 @Injectable()
@@ -18,9 +22,23 @@ export class UsersRepository implements UsersRepositoryContract{
              UserSex.Male,
              "https://img.freepik.com/free-photo/androgynous-avatar-non-binary-queer-person_23-2151100177.jpg",
              "2020-11-02",
-             new StudentRole(
+             new SesameRole(
+                 SesameRoleType.Student,
                  "randomid",
-                 []
+                 [{
+                     permission : SesamePermissions.USER_LOGIN,
+                     description : "controls user's action to login and logout",
+                     state : SesamePermissionState.GRANTED
+                 },{
+                     permission : SesamePermissions.USER_VIEW_PROFILE,
+                     description : "controls user's action to login and logout",
+                     state : SesamePermissionState.GRANTED
+                 },{
+                         permission : SesamePermissions.USER_UPDATE_PROFILE,
+                         description : "controls user's action to login and logout",
+                         state : SesamePermissionState.GRANTED
+                  }
+                 ]
              )
          )
      ]

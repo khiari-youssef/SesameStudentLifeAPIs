@@ -3,7 +3,7 @@ import {JwtModule} from '@nestjs/jwt';
 import {UsersManagementModule} from "./UsersManagementModule";
 import {AuthService} from "../../infrastructure/security/AuthService";
 import {AuthenticationController} from "../controllers/AuthenticationController";
-import {EnvConfig} from "../../../../config/AppConfiguration";
+import {EnvConfig, LogConfigDev, LogConfigProd} from "../../../../config/AppConfiguration";
 
 @Module({
     imports: [

@@ -2,8 +2,8 @@ import {Controller, Get, Header, Res, StreamableFile, UseGuards} from "@nestjs/c
 import {Response} from "express";
 import {createReadStream} from "fs";
 import {join} from 'path';
-import {AuthGuard, SesameRoles} from "../../users-management/src/infrastructure/security/AuthGuard";
-import {SesameRole, SesameRoleLabel, StudentRole} from "../../users-management/src/domain/entities/SesameRole";
+import {AuthGuard, RequirePermissions, RequireRole} from "../../users-management/src/infrastructure/security/AuthGuard";
+import {SesamePermissions, SesameRoleType} from "../../users-management/src/domain/entities/SesameRole";
 
 @Controller('/')
 export class AppController {
@@ -24,10 +24,29 @@ export class AppController {
     }
   }
 
-  @SesameRoles(SesameRoleLabel.Student)
+  @RequireRole(SesameRoleType.Student)
   @UseGuards(AuthGuard)
   @Get('test')
-  async testAuth() {
+  async testAuthStudent() {
+    console.log("test log")
       return "ok"
+  }
+
+
+  @RequireRole(SesameRoleType.Teacher)
+  @RequirePermissions(SesamePermissions.USER_VIEW_PROFILE,SesamePermissions.USER_UPDATE_PROFILE)
+  @UseGuards(AuthGuard)
+  @Get('test2')
+  async testAuthTeacher() {
+    console.log("test log2")
+    return "ok"
+  }
+
+
+  @UseGuards(AuthGuard)
+  @Get('test3')
+  async testAuth() {
+    console.log("test log2")
+    return "ok"
   }
 }
