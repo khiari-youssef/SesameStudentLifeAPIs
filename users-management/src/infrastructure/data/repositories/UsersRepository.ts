@@ -1,8 +1,9 @@
 import {UsersRepositoryContract} from "./UsersRepositoryContract";
 import {Injectable} from "@nestjs/common";
 import {SesameUser, UserSex} from "../../../domain/entities/SesameUser";
-import {SesameRole} from "../../../domain/entities/SesameRole";
+import {SesameRole, StudentRole} from "../../../domain/entities/SesameRole";
 import {DomainError, DomainErrorType} from "../../../domain/exceptions/DomainError";
+import {SesameStudent} from "../../../domain/entities/SesameStudent";
 
 
 @Injectable()
@@ -17,8 +18,8 @@ export class UsersRepository implements UsersRepositoryContract{
              UserSex.Male,
              "https://img.freepik.com/free-photo/androgynous-avatar-non-binary-queer-person_23-2151100177.jpg",
              "2020-11-02",
-             new SesameRole(
-                 SesameRole.StudentRole,
+             new StudentRole(
+                 "randomid",
                  []
              )
          )

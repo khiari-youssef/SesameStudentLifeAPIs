@@ -3,12 +3,12 @@ import {JwtModule} from '@nestjs/jwt';
 import {UsersManagementModule} from "./UsersManagementModule";
 import {AuthService} from "../../infrastructure/security/AuthService";
 import {AuthenticationController} from "../controllers/AuthenticationController";
-
-require('dotenv').config()
+import {EnvConfig} from "../../../../config/AppConfiguration";
 
 @Module({
     imports: [
         UsersManagementModule,
+        EnvConfig,
         JwtModule.register({
             global: true,
             secret:  process.env.JWT_SECRET,

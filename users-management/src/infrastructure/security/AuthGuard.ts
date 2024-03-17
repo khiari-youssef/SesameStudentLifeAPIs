@@ -1,11 +1,16 @@
-import {CanActivate, ExecutionContext, Injectable, UnauthorizedException,} from '@nestjs/common';
+import {CanActivate, ExecutionContext, Injectable, SetMetadata, UnauthorizedException,} from '@nestjs/common';
 import {JwtService} from '@nestjs/jwt';
 import {Request} from 'express';
-import {SesameRole} from "../../domain/entities/SesameRole";
+import {SesameRole, SesameRoleLabel} from "../../domain/entities/SesameRole";
+import {Reflector} from "@nestjs/core";
+
+const ROLES_KEY : string = "ROLES_KEY"
+export const SesameRoles = (...roles: SesameRoleLabel[]) => SetMetadata(ROLES_KEY, roles);
+
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-    constructor(private jwtService: JwtService) {}
+    constructor(private jwtService: JwtService,private reflector: Reflector) {}
 
     async canActivate(context: ExecutionContext): Promise<boolean> {
         const request = context.switchToHttp().getRequest();
@@ -21,16 +26,15 @@ export class AuthGuard implements CanActivate {
                 role : SesameRole,
                 iat : number,
                 exp : number
-            }>(
-                token,
-                {
-                    secret: process.env.JWT_SECRET
-                }
-            );
+            }>(token, {secret: process.env.JWT_SECRET});
+            const requiredRoles = this.reflector.getAllAndOverride<SesameRoleLabel[]>(ROLES_KEY, [
+                context.getHandler(),
+                context.getClass(),
+            ]);
+           return  requiredRoles.some((role)=>role == user.role.getRoleName())
         } catch {
             throw new UnauthorizedException();
         }
-        return true;
     }
 
     private static extractTokenFromHeader(request: Request): string | undefined {

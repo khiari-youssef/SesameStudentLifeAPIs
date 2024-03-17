@@ -1,5 +1,7 @@
 import {NestFactory} from '@nestjs/core';
 import {AppModule} from './app.module';
+import {ConfigModule} from "@nestjs/config";
+
 
 
 async function bootstrap() {
@@ -8,7 +10,7 @@ async function bootstrap() {
   const port = process.env.SERVER_PORT || 3000
   const host = process.env.SERVER_HOST || 'localhost'
   await app.listen(port,host,()=>{
-     console.log(`Server running on ${host}:${port}`)
+     console.log(`Server running on ${host}:${port} with ${process.env.NODE_ENV} environment`)
   });
 }
 bootstrap();

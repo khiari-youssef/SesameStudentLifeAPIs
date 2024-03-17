@@ -2,7 +2,8 @@ import {Controller, Get, Header, Res, StreamableFile, UseGuards} from "@nestjs/c
 import {Response} from "express";
 import {createReadStream} from "fs";
 import {join} from 'path';
-import {AuthGuard} from "../../users-management/src/infrastructure/security/AuthGuard";
+import {AuthGuard, SesameRoles} from "../../users-management/src/infrastructure/security/AuthGuard";
+import {SesameRole, SesameRoleLabel, StudentRole} from "../../users-management/src/domain/entities/SesameRole";
 
 @Controller('/')
 export class AppController {
@@ -23,6 +24,7 @@ export class AppController {
     }
   }
 
+  @SesameRoles(SesameRoleLabel.Student)
   @UseGuards(AuthGuard)
   @Get('test')
   async testAuth() {
