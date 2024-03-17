@@ -1,4 +1,4 @@
-import {SesameUser} from "./SesameUser";
+import {SesameUser, UserSex} from "./SesameUser";
 import {SesameClass} from "./SesameClass";
 import {SesameRole} from "./SesameRole";
 
@@ -14,7 +14,7 @@ export class SesameStudent extends SesameUser {
         firstName : string,
         lastName : string,
         email : string,
-        sex : string,
+        sex : UserSex,
         profile_picture_id : string,
         registrationDate : string,
         portfolioId: string,

@@ -8,4 +8,7 @@ export class SesameRole{
     this.id = id
     this.permissions = permissions
   }
+
+  static StudentRole : string = "StudentRole"
+  static TeacherRole : string = "TeacherRole"
 }

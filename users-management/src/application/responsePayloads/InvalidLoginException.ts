@@ -1,7 +1,6 @@
 import {HttpException, HttpStatus} from "@nestjs/common";
 
 
-
 export class InvalidLoginException extends HttpException{
 
     content: string

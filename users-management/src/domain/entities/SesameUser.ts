@@ -1,13 +1,15 @@
 import {SesameRole} from "./SesameRole";
-import {SesameTeacher} from "./SesameTeacher";
 
+export enum UserSex {
+    Male,Female
+}
 
 export class SesameUser{
     registrationID : string
     firstName : string
     lastName : string
     email : string
-    sex : string
+    sex : UserSex
     profile_picture_id : string
     registrationDate : string
     role : SesameRole
@@ -17,7 +19,7 @@ export class SesameUser{
     firstName : string,
     lastName : string,
     email : string,
-    sex : string,
+    sex : UserSex,
     profile_picture_id : string,
     registrationDate : string,
     role : SesameRole

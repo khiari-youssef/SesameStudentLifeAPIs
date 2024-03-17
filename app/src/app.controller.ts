@@ -1,13 +1,12 @@
-import { Controller, Get, Header, Res, StreamableFile } from "@nestjs/common";
-import { AppService } from './app.service';
-import { Response } from "express";
-import * as fs from "fs";
-import { join } from 'path';
-import { createReadStream } from "fs";
+import {Controller, Get, Header, Res, StreamableFile, UseGuards} from "@nestjs/common";
+import {Response} from "express";
+import {createReadStream} from "fs";
+import {join} from 'path';
+import {AuthGuard} from "../../users-management/src/infrastructure/security/AuthGuard";
 
 @Controller('/')
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor() {}
 
   @Header('Content-Type', 'image/png; charset=none')
   @Get()
@@ -22,6 +21,11 @@ export class AppController {
       res.status(404)
       return null
     }
+  }
 
+  @UseGuards(AuthGuard)
+  @Get('test')
+  async testAuth() {
+      return "ok"
   }
 }
