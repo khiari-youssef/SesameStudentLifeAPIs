@@ -17,7 +17,7 @@ export class UsersManagementUsecase {
      async loginUserWithCredentials(credentialsLogin : SesameCredentialsLogin) : Promise<SesameUser|DomainError> {
           if (credentialsLogin.isEmailRequiredConstraintValid()) {
              if (credentialsLogin.isEmailDomainConstraintValid()) {
-                return  await this.repositoryContract.loginUserWithCredentials(
+                return  await this.repositoryContract.fetchUserByEmailAndPassword(
                      credentialsLogin.email,
                      credentialsLogin.password
                  ).then((result)=>{

@@ -45,7 +45,7 @@ export class UsersRepository implements UsersRepositoryContract{
          }
      ]
 
-    async loginUserWithCredentials(email: string, password: string) : Promise<SesameUser> {
+    async fetchUserByEmailAndPassword(email: string, password: string) : Promise<SesameUser> {
         return  this.mockDatabase.find((value) => {
           return value.user.email == email && value.password == password
       }).user;

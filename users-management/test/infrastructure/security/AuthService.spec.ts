@@ -17,7 +17,7 @@ import {DomainError, DomainErrorType} from "../../../src/domain/exceptions/Domai
 import {SesameCredentialsLogin} from "../../../src/domain/entities/SesameCredentialsLogin";
 
 
-describe('AuthenticationServiceTest',()=>{
+describe('AuthenticationServiceSpec',()=>{
 
     let usersRepositoryMockContract : UsersRepositoryContract
     let userManagementUsecase : UsersManagementUsecase
@@ -79,14 +79,14 @@ describe('AuthenticationServiceTest',()=>{
     })
     describe('when a client authenticates with valid credentials',  () => {
         it('should return a successfull result with access token and user profile', async () => {
-             await jest.spyOn(usersRepositoryMockContract,'loginUserWithCredentials').mockImplementation(async ()=> sesameUser)
+             await jest.spyOn(usersRepositoryMockContract,'fetchUserByEmailAndPassword').mockImplementation(async ()=> sesameUser)
              jest.spyOn(jwtService,'signAsync').mockImplementation(async ()=>validSesameCredentialsToken)
             await expect(authService.loginUserWithCredentials(validSesameCredentials)).resolves.toStrictEqual(new LoginResponse(sesameUser,validSesameCredentialsToken))
         });
     });
     describe("when a client authenticates with invalid credentials",()=>{
         it('should return a failure result with invalid credentials error', async () => {
-            await jest.spyOn(usersRepositoryMockContract,'loginUserWithCredentials').mockImplementation(async ()=> null)
+            await jest.spyOn(usersRepositoryMockContract,'fetchUserByEmailAndPassword').mockImplementation(async ()=> null)
             jest.spyOn(jwtService,'signAsync').mockImplementation(async ()=>validSesameCredentialsToken)
             await expect(authService.loginUserWithCredentials(invalidPasswordSesameCredentials)).rejects.toThrowError(new DomainError("User with such login not found",DomainErrorType.InvalidLogin))
         });
