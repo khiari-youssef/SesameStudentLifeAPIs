@@ -1,9 +1,14 @@
 import {Module} from '@nestjs/common';
-import {JwtModule} from '@nestjs/jwt';
+import {JwtModule, JwtService} from '@nestjs/jwt';
 import {UsersManagementModule} from "./UsersManagementModule";
-import {AuthService} from "../../infrastructure/security/AuthService";
+import {AuthServiceImpl} from "../../infrastructure/security/AuthServiceImpl";
 import {AuthenticationController} from "../controllers/AuthenticationController";
-import {EnvConfig, LogConfigDev, LogConfigProd} from "../../../../config/AppConfiguration";
+import {EnvConfig} from "../../../../config/AppConfiguration";
+import {UsersManagementUsecase} from "../../domain/usecases/UsersManagementUsecase";
+
+const AuthServiceFactory = (usersManagementUsecase : UsersManagementUsecase,jwtService: JwtService) => {
+    return  new AuthServiceImpl(usersManagementUsecase,jwtService)
+}
 
 @Module({
     imports: [
@@ -15,8 +20,14 @@ import {EnvConfig, LogConfigDev, LogConfigProd} from "../../../../config/AppConf
             signOptions: { expiresIn: `${process.env.JWT_EXP_HOURS}h` },
         }),
     ],
-    providers: [AuthService],
+    providers: [
+        {
+            provide: 'AuthService',
+            useFactory: AuthServiceFactory,
+            inject:[UsersManagementUsecase,JwtService]
+        }
+    ],
     controllers: [AuthenticationController],
-    exports: [AuthService],
+    exports: [],
 })
 export class AuthModule {}

@@ -1,9 +1,5 @@
 import {NestFactory} from '@nestjs/core';
 import {AppModule} from './app.module';
-import {ConfigModule} from "@nestjs/config";
-import {LogConfigDev, LogConfigProd} from "../../config/AppConfiguration";
-import {NestApplicationOptions} from "@nestjs/common/interfaces/nest-application-options.interface";
-
 
 
 async function bootstrap() {
@@ -11,7 +7,7 @@ async function bootstrap() {
   const app = await NestFactory.create(
       AppModule,
       {
-        logger: false
+        logger: console
       }
 );
   const port = process.env.SERVER_PORT || 3000

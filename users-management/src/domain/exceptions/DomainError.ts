@@ -1,5 +1,4 @@
 
-
 export enum DomainErrorType {
     InvalidLogin,
     Unauthorized,
@@ -8,11 +7,10 @@ export enum DomainErrorType {
 }
 
 
-export class DomainError {
-    message: string
+export class DomainError extends Error{
     type : DomainErrorType
     constructor(message,type) {
+        super(message);
         this.type = type
-        this.message = message
     }
 }
