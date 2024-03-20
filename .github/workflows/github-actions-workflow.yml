@@ -18,5 +18,11 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - name: Running Test with coverage output
-        run: jest --ci --coverage
+      - uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '16.x'
+      - name: Run Tests with coverage
+        - run: npm run build --if-present
+        - run: npm test
