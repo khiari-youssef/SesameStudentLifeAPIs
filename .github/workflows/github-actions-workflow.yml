@@ -18,4 +18,4 @@ jobs:
   test:
    runs-on: ubuntu-latest
    steps:
-     -run: jest --ci --coverage
+     run: jest --ci --coverage
