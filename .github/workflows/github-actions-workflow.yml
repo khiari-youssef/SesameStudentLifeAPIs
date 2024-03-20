@@ -20,5 +20,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Run Tests with coverage
-        - run: npm run build --if-present
-        - run: npm test
+        run: npm run test:cov
