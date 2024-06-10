@@ -1,5 +1,5 @@
 import {AuthServiceImpl} from "../../../src/infrastructure/security/AuthServiceImpl";
-import {UsersManagementUsecase} from "../../../src/domain/usecases/UsersManagementUsecase";
+import {UsersManagementUsecase} from "../../../src/domain/usecases/UserLoginUsecase";
 import {JwtService} from "@nestjs/jwt";
 import {AuthService} from "../../../src/infrastructure/security/AuthService";
 import {UsersRepositoryContract} from "../../../src/infrastructure/data/repositories/UsersRepositoryContract";

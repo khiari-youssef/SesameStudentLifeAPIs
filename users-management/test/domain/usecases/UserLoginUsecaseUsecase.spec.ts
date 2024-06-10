@@ -1,5 +1,5 @@
 import {UsersRepositoryContract} from "../../../src/infrastructure/data/repositories/UsersRepositoryContract";
-import {UsersManagementUsecase} from "../../../src/domain/usecases/UsersManagementUsecase";
+import {UserLoginUsecase} from "../../../src/domain/usecases/UserLoginUsecase";
 import {JwtService} from "@nestjs/jwt";
 import {UsersRepositoryMockContract} from "../../infrastructure/security/UsersRepositoryMockContract";
 import {AuthServiceImpl} from "../../../src/infrastructure/security/AuthServiceImpl";
@@ -17,7 +17,7 @@ import {DomainError, DomainErrorType} from "../../../src/domain/exceptions/Domai
 
 describe("UsersManagementUsecaseSpec",()=>{
     let usersRepositoryMockContract : UsersRepositoryContract
-    let userManagementUsecase : UsersManagementUsecase
+    let userManagementUsecase : UserLoginUsecase
 
     const validSesameCredentials : SesameCredentialsLogin = new SesameCredentialsLogin(
         "youssef.khiari@sesame.com.tn",
@@ -26,10 +26,12 @@ describe("UsersManagementUsecaseSpec",()=>{
 
     const sesameUser = new SesameUser(
         "9c057fe2d493527a6f08a405f32387e96f569472",
+         "aaaa",
         "Youssef",
         "Khiari",
         "youssef.khiari@sesame.com.tn",
         UserSex.Male,
+        "11-22-1998",
         "https://img.freepik.com/free-photo/androgynous-avatar-non-binary-queer-person_23-2151100177.jpg",
         "2020-11-02",
         new SesameRole(
@@ -49,23 +51,28 @@ describe("UsersManagementUsecaseSpec",()=>{
                 state : SesamePermissionState.GRANTED
             }
             ]
-        )
+        ),
+        {
+           "creationDate" : "2023-11-02",
+           "expirationDate" : "2024-11-02",
+           "signature" : "ateagdsdg" 
+        }
     )
 
     beforeAll(async ()=>{
         usersRepositoryMockContract = new UsersRepositoryMockContract()
-        userManagementUsecase = new UsersManagementUsecase(usersRepositoryMockContract)
+        userManagementUsecase = new UserLoginUsecase(usersRepositoryMockContract)
     })
     describe("when a client authenticates with valid credentials",()=>{
         it('should return a successfull result user profile', async function () {
             await jest.spyOn(usersRepositoryMockContract,'fetchUserByEmailAndPassword').mockImplementation(async ()=> sesameUser)
-            await expect(userManagementUsecase.loginUserWithCredentials(validSesameCredentials)).resolves.toStrictEqual(sesameUser)
+            await expect(userManagementUsecase.execute(validSesameCredentials)).resolves.toStrictEqual(sesameUser)
         });
     })
     describe("when a client authenticates with invalid credentials",()=>{
         it('should fail with an invalid credentials domain error', async function () {
             await jest.spyOn(usersRepositoryMockContract,'fetchUserByEmailAndPassword').mockImplementation(async ()=> undefined)
-            await expect(userManagementUsecase.loginUserWithCredentials(new SesameCredentialsLogin(
+            await expect(userManagementUsecase.execute(new SesameCredentialsLogin(
                 "youssef.khiari@sesame.com.tn",
                 "0000100"
             ))).resolves.toStrictEqual(
@@ -74,7 +81,7 @@ describe("UsersManagementUsecaseSpec",()=>{
         });
         it('should fail with an invalid credentials domain error', async function () {
             await jest.spyOn(usersRepositoryMockContract,'fetchUserByEmailAndPassword').mockImplementation(async ()=> undefined)
-            await expect(userManagementUsecase.loginUserWithCredentials(new SesameCredentialsLogin(
+            await expect(userManagementUsecase.execute(new SesameCredentialsLogin(
                 "youssef.khiari@sesame.com.tn",
                 "0000100"
             ))).resolves.toStrictEqual(
@@ -83,7 +90,7 @@ describe("UsersManagementUsecaseSpec",()=>{
         });
         it('should fail with an missing email domain error', async function () {
             await jest.spyOn(usersRepositoryMockContract,'fetchUserByEmailAndPassword').mockImplementation(async ()=> undefined)
-            await expect(userManagementUsecase.loginUserWithCredentials(new SesameCredentialsLogin(
+            await expect(userManagementUsecase.execute(new SesameCredentialsLogin(
                 "",
                 "0000100"
             ))).resolves.toStrictEqual(

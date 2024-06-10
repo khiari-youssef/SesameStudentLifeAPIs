@@ -16,10 +16,12 @@ export class UsersRepository implements UsersRepositoryContract{
          {
              user : new SesameUser(
                  "9c057fe2d493527a6f08a405f32387e96f569472",
+                 "aaaa",
                  "Youssef",
                  "Khiari",
                  "youssef.khiari@sesame.com.tn",
                  UserSex.Male,
+                 "11-11-1998",
                  "https://img.freepik.com/free-photo/androgynous-avatar-non-binary-queer-person_23-2151100177.jpg",
                  "2020-11-02",
                  new SesameRole(
@@ -39,7 +41,13 @@ export class UsersRepository implements UsersRepositoryContract{
                          state : SesamePermissionState.GRANTED
                      }
                      ]
-                 )
+                 ),
+                 {
+                    creationDate : "",
+                    expirationDate : "",
+                    signature : ""
+        
+                 }
              ),
              password : "0000"
          }

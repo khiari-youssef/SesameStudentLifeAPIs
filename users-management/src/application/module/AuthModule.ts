@@ -4,9 +4,9 @@ import {UsersManagementModule} from "./UsersManagementModule";
 import {AuthServiceImpl} from "../../infrastructure/security/AuthServiceImpl";
 import {AuthenticationController} from "../controllers/AuthenticationController";
 import {EnvConfig} from "../../../../config/AppConfiguration";
-import {UsersManagementUsecase} from "../../domain/usecases/UsersManagementUsecase";
+import {UserLoginUsecase} from "../../domain/usecases/UserLoginUsecase";
 
-const AuthServiceFactory = (usersManagementUsecase : UsersManagementUsecase,jwtService: JwtService) => {
+const AuthServiceFactory = (usersManagementUsecase : UserLoginUsecase,jwtService: JwtService) => {
     return  new AuthServiceImpl(usersManagementUsecase,jwtService)
 }
 
@@ -24,7 +24,7 @@ const AuthServiceFactory = (usersManagementUsecase : UsersManagementUsecase,jwtS
         {
             provide: 'AuthService',
             useFactory: AuthServiceFactory,
-            inject:[UsersManagementUsecase,JwtService]
+            inject:[UserLoginUsecase,JwtService]
         }
     ],
     controllers: [AuthenticationController],

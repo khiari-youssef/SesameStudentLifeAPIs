@@ -9,18 +9,21 @@ export class SesameTeacher extends SesameUser{
 
     constructor(
     registrationID : string,
+    candidatureID : string,
     firstName : string,
     lastName : string,
     email : string,
     sex : UserSex,
-    profile_picture_id : string,
+    birthdate : string,
+    profilePictureUrl : string,
     registrationDate : string,
     portfolioId : string,
     profBackground : String,
     assignedClasses : [],
-    role : SesameRole
+    role : SesameRole,
+    badge : SesameBadge
     ) {
-        super(registrationID,firstName,lastName,email,sex,profile_picture_id,registrationDate,role);
+        super(registrationID,candidatureID,firstName,lastName,email,sex,birthdate,profilePictureUrl,registrationDate,role,badge);
         this.assignedClasses = assignedClasses
         this.portfolioId = portfolioId
         this.profBackground = profBackground

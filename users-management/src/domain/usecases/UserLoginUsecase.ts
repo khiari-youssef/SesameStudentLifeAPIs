@@ -5,7 +5,7 @@ import {DomainError, DomainErrorType} from "../exceptions/DomainError";
 import {UsersRepositoryContract} from "../../infrastructure/data/repositories/UsersRepositoryContract";
 
 @Injectable()
-export class UsersManagementUsecase {
+export class UserLoginUsecase {
 
     constructor(
        @Inject('UsersRepositoryContract') private readonly  repositoryContract: UsersRepositoryContract,
@@ -14,7 +14,7 @@ export class UsersManagementUsecase {
     }
 
 
-     async loginUserWithCredentials(credentialsLogin : SesameCredentialsLogin) : Promise<SesameUser|DomainError> {
+     async execute(credentialsLogin : SesameCredentialsLogin) : Promise<SesameUser|DomainError> {
           if (credentialsLogin.isEmailRequiredConstraintValid()) {
              if (credentialsLogin.isEmailDomainConstraintValid()) {
                 return  await this.repositoryContract.fetchUserByEmailAndPassword(

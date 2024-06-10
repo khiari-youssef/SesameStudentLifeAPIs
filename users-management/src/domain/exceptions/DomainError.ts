@@ -3,7 +3,9 @@ export enum DomainErrorType {
     InvalidLogin,
     Unauthorized,
     InvalidSesameEmail,
-    AnyError
+    AnyError,
+    InvalidForm,
+    AlreadyInUse
 }
 
 

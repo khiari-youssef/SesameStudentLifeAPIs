@@ -1,16 +1,26 @@
 import {Module} from '@nestjs/common';
 import {UsersManagementController} from "../controllers/UsersManagementController";
-import {UsersManagementUsecase} from "../../domain/usecases/UsersManagementUsecase";
-import {UsersRepository} from "../../infrastructure/data/repositories/UsersRepository";
+import {UserLoginUsecase} from "../../domain/usecases/UserLoginUsecase";
+import {UserEnrollmentUseCase} from "../../domain/usecases/UserEnrollmentUseCase";
+import {UsersRepository,} from "../../infrastructure/data/repositories/UsersRepository";
+import {EnrollmentRepository} from "../../infrastructure/data/repositories/EnrollmentRepository";
 
 
 @Module({
     imports : [],
-    providers : [{
+    providers : [
+        {
         provide: 'UsersRepositoryContract',
         useValue: new UsersRepository()
-    },UsersManagementUsecase],
+      },
+      {
+        provide: 'EnrollmentRepositoryContract',
+        useValue: new EnrollmentRepository()
+      },
+    UserLoginUsecase,
+    UserEnrollmentUseCase
+],
    controllers : [UsersManagementController],
-    exports : [UsersManagementUsecase]
+    exports : [UserLoginUsecase,UserEnrollmentUseCase]
 })
 export class UsersManagementModule{}
