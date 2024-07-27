@@ -5,7 +5,6 @@ import {LoginResponse} from "../responsePayloads/LoginResponse";
 import {SesameCredentialsLogin} from "../../domain/entities/SesameCredentialsLogin";
 import {AuthService} from "../../infrastructure/security/AuthService";
 import {DomainError} from "users-management/src/domain/exceptions/DomainError";
-import {ValidationError} from "@nestjs/common/interfaces/external/validation-error.interface";
 
 @Controller('auth')
 export class AuthenticationController {

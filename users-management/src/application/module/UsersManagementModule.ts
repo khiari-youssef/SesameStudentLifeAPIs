@@ -1,5 +1,5 @@
 import {Module} from '@nestjs/common';
-import {UsersManagementController} from "../controllers/UsersManagementController";
+import {UsersRegistrationController} from "../controllers/UsersRegistrationController";
 import {UserLoginUsecase} from "../../domain/usecases/UserLoginUsecase";
 import {UserEnrollmentUseCase} from "../../domain/usecases/UserEnrollmentUseCase";
 import {UsersRepository,} from "../../infrastructure/data/repositories/UsersRepository";
@@ -20,7 +20,7 @@ import {EnrollmentRepository} from "../../infrastructure/data/repositories/Enrol
     UserLoginUsecase,
     UserEnrollmentUseCase
 ],
-   controllers : [UsersManagementController],
+   controllers : [UsersRegistrationController],
     exports : [UserLoginUsecase,UserEnrollmentUseCase]
 })
 export class UsersManagementModule{}

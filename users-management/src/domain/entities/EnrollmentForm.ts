@@ -1,3 +1,5 @@
+import {ValidationService} from "../../../../core/src/utilities/validation_service";
+import {UserSex} from "./SesameUser";
 
 
 export enum EnrollmentStatus {
@@ -7,8 +9,8 @@ export enum EnrollmentStatus {
 export class EnrollmentForm{
     personalEmail : string
     phone : string
-    sex : string
-    birthDate : string
+    sex : UserSex
+    birthDate : Date
     firstName : string
     lastName : string
     programId : string
@@ -17,12 +19,12 @@ export class EnrollmentForm{
     EnrollmentForm(
      personalEmail : string,
     phone : string,
-    sex : string,
-    birthDate : string,
+    sex : UserSex,
+    birthDate : Date,
     firstName : string,
     lastName : string,
     programId : string,
-    status : EnrollmentStatus
+    status : EnrollmentStatus = EnrollmentStatus.Pending
     ){
       this.personalEmail = personalEmail
       this.phone = phone;
@@ -34,7 +36,4 @@ export class EnrollmentForm{
       this.status = status;
     }
 
-    isFormValid() : boolean{
-        return true;
-    }
 }

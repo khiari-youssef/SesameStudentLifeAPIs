@@ -3,6 +3,7 @@ import {EnrollmentForm,} from "../entities/EnrollmentForm";
 import {EnrollmentResult} from "../entities/EnrollmentResult";
 import{EnrollmentRepositoryContract} from "../../infrastructure/data/repositories/EnrollmentRepository"
 import {DomainError, DomainErrorType} from "../exceptions/DomainError";
+import {ValidationService} from "../../../../core/src/utilities/validation_service";
 
 
 @Injectable()
@@ -14,16 +15,18 @@ export class UserEnrollmentUseCase {
  
      }
 
-    async execute(enrollmentForm : EnrollmentForm) : Promise<EnrollmentResult|DomainError>{
-          if (enrollmentForm.isFormValid()){
-                 return new DomainError(DomainErrorType.InvalidForm,"Invalid EnrollmentForm !")
+    async execute(enrollmentForm : EnrollmentForm) : Promise<EnrollmentResult>{
+          if (ValidationService.isEmailValid(enrollmentForm.personalEmail) && ValidationService.hasContent(enrollmentForm.firstName) && ValidationService.hasContent(enrollmentForm.lastName)){
+              throw new DomainError("Enrollment form is not correctly filled :",DomainErrorType.InvalidForm)
           } else {
             let existingApplication : EnrollmentResult = await this.repositoryContract.findExistingEnrollmentByEmail(enrollmentForm.personalEmail)
             if (!existingApplication){
-                return new DomainError(DomainErrorType.AlreadyInUse,`someone using this email: ${enrollmentForm.personalEmail} is already registered !`) 
-
+                throw new DomainError(DomainErrorType.AlreadyInUse,`someone using this email: ${enrollmentForm.personalEmail} is already registered !`)
             } else {
-                await this.repositoryContract.saveEnrollment(enrollmentForm,"");
+               return  await this.repositoryContract.saveEnrollment(
+                    enrollmentForm,
+                    `${new Date().toISOString()}-${enrollmentForm.personalEmail}`
+                );
             }
           }
     }
