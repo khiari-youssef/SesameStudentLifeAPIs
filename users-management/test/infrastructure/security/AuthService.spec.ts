@@ -1,5 +1,5 @@
 import {AuthServiceImpl} from "../../../src/infrastructure/security/AuthServiceImpl";
-import {UsersManagementUsecase} from "../../../src/domain/usecases/UserLoginUsecase";
+import {UserLoginUsecase} from "../../../src/domain/usecases/UserLoginUsecase";
 import {JwtService} from "@nestjs/jwt";
 import {AuthService} from "../../../src/infrastructure/security/AuthService";
 import {UsersRepositoryContract} from "../../../src/infrastructure/data/repositories/UsersRepositoryContract";
@@ -20,8 +20,8 @@ import {SesameCredentialsLogin} from "../../../src/domain/entities/SesameCredent
 describe('AuthenticationServiceSpec',()=>{
 
     let usersRepositoryMockContract : UsersRepositoryContract
-    let userManagementUsecase : UsersManagementUsecase
     let jwtService : JwtService
+    let userLoginUsecase : UserLoginUsecase
     let authService : AuthService
     const validSesameCredentials : SesameCredentialsLogin = new SesameCredentialsLogin(
         "youssef.khiari@sesame.com.tn",
@@ -29,12 +29,14 @@ describe('AuthenticationServiceSpec',()=>{
     )
     const sesameUser = new SesameUser(
         "9c057fe2d493527a6f08a405f32387e96f569472",
+        "aztatqegd",
         "Youssef",
         "Khiari",
         "youssef.khiari@sesame.com.tn",
         UserSex.Male,
-        "https://img.freepik.com/free-photo/androgynous-avatar-non-binary-queer-person_23-2151100177.jpg",
         "2020-11-02",
+        "profile",
+        "https://img.freepik.com/free-photo/androgynous-avatar-non-binary-queer-person_23-2151100177.jpg",
         new SesameRole(
             SesameRoleType.Student,
             "randomid",
@@ -52,7 +54,12 @@ describe('AuthenticationServiceSpec',()=>{
                 state : SesamePermissionState.GRANTED
             }
             ]
-        )
+        ),
+        {
+            "creationDate" : "2023-11-02",
+            "expirationDate" : "2024-11-02",
+            "signature" : "ateagdsdg"
+        }
     )
 
     const validSesameCredentialsToken : string = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InlvdXNzZWYua2hpYXJpQHNlc2FtZS5jb20udG4iLCJuYW1lIjoiSm9obiBEb2UiLCJpYXQiOjE1MTYyMzkwMjJ9.TLEpI4DANr5RbVPdBESDT4rHt50Ud-Im7s6r909Uyho"
@@ -74,8 +81,8 @@ describe('AuthenticationServiceSpec',()=>{
     beforeAll(async ()=>{
         jwtService = JwtService.prototype
         usersRepositoryMockContract = new UsersRepositoryMockContract()
-        userManagementUsecase = new UsersManagementUsecase(usersRepositoryMockContract)
-        authService = new AuthServiceImpl(userManagementUsecase,jwtService)
+        userLoginUsecase = new UserLoginUsecase(usersRepositoryMockContract)
+        authService = new AuthServiceImpl(userLoginUsecase,jwtService)
     })
     describe('when a client authenticates with valid credentials',  () => {
         it('should return a successfull result with access token and user profile', async () => {
@@ -88,17 +95,18 @@ describe('AuthenticationServiceSpec',()=>{
         it('should return a failure result with invalid credentials error', async () => {
             await jest.spyOn(usersRepositoryMockContract,'fetchUserByEmailAndPassword').mockImplementation(async ()=> null)
             jest.spyOn(jwtService,'signAsync').mockImplementation(async ()=>validSesameCredentialsToken)
-            await expect(authService.loginUserWithCredentials(invalidPasswordSesameCredentials)).rejects.toThrowError(new DomainError("User with such login not found",DomainErrorType.InvalidLogin))
+            await expect(authService.loginUserWithCredentials(invalidPasswordSesameCredentials))
+                .rejects.toThrowError(new DomainError("Invalid login credentials !",DomainErrorType.InvalidLogin))
         });
     })
     describe("when a client authenticates with no email credentials",()=>{
         it('should return a failure result with invalid credentials error', async () => {
-            await expect(authService.loginUserWithCredentials(invalidNoEmailSesameCredentials)).rejects.toThrowError(new DomainError("Email is not valid",DomainErrorType.InvalidSesameEmail))
+            await expect(authService.loginUserWithCredentials(invalidNoEmailSesameCredentials)).rejects.toThrowError(new DomainError("Invalid login credentials !",DomainErrorType.InvalidSesameEmail))
         });
     })
     describe("when a client authenticates with invalid email domain credentials",()=>{
         it('should return a failure result with invalid credentials error', async () => {
-            await expect(authService.loginUserWithCredentials(invalidEmailDomainSesameCredentials)).rejects.toThrowError( new DomainError("Invalid email sesame domain !",DomainErrorType.InvalidSesameEmail))
+            await expect(authService.loginUserWithCredentials(invalidEmailDomainSesameCredentials)).rejects.toThrowError( new DomainError("Invalid login credentials !",DomainErrorType.InvalidSesameEmail))
         });
     })
 })

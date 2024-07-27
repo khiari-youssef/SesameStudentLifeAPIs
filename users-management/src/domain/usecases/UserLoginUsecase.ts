@@ -21,7 +21,7 @@ export class UserLoginUsecase {
                      credentialsLogin.email,
                      credentialsLogin.password
                  ).then((result)=>{
-                     if (!result) return  new DomainError("User with such login not found",DomainErrorType.InvalidLogin)
+                     if (!result) return  new DomainError("Invalid login credentials !",DomainErrorType.InvalidLogin)
                      return  result
                  },()=>{
                     return  new DomainError("User with such login not found",DomainErrorType.InvalidLogin)

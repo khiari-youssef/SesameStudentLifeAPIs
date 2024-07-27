@@ -11,14 +11,14 @@ import { DomainError,DomainErrorType } from 'users-management/src/domain/excepti
 @Injectable()
 export class AuthServiceImpl implements AuthService{
     constructor(
-         private readonly  usersManagementUsecase: UserLoginUsecase,
+         private readonly  userLoginUsecase: UserLoginUsecase,
          private readonly jwtService: JwtService
     ) {}
 
     async loginUserWithCredentials(
         credentialsLogin : SesameCredentialsLogin
     ): Promise<LoginResponse> {
-       return  this.usersManagementUsecase.execute(credentialsLogin).then(
+       return  this.userLoginUsecase.execute(credentialsLogin).then(
            async (result)=>{
                 if (result instanceof SesameUser) {
                     const accessToken =  await this.jwtService.signAsync({
