@@ -33,20 +33,19 @@ export class UsersRepository implements UsersRepositoryContract{
                          state : SesamePermissionState.GRANTED
                      },{
                          permission : SesamePermissions.USER_VIEW_PROFILE,
-                         description : "controls user's action to login and logout",
+                         description : "controls user's action to view profile data",
                          state : SesamePermissionState.GRANTED
                      },{
                          permission : SesamePermissions.USER_UPDATE_PROFILE,
-                         description : "controls user's action to login and logout",
-                         state : SesamePermissionState.GRANTED
+                         description : "controls user's action to update profile data",
+                         state : SesamePermissionState.DENIED
                      }
                      ]
                  ),
                  {
-                    creationDate : "",
-                    expirationDate : "",
+                    creationDate :  new Date(Date.now()).toISOString(),
+                    expirationDate : new Date(Date.now()+90*24*3600*1000).toISOString(),
                     signature : ""
-        
                  }
              ),
              password : "0000"
