@@ -76,7 +76,7 @@ describe("UsersManagementUsecaseSpec",()=>{
                 "youssef.khiari@sesame.com.tn",
                 "0000100"
             ))).resolves.toStrictEqual(
-                new DomainError("User with such login not found",DomainErrorType.InvalidLogin)
+                new DomainError("Invalid login credentials !",DomainErrorType.InvalidLogin)
             )
         });
         it('should fail with an invalid credentials domain error', async function () {
@@ -85,7 +85,7 @@ describe("UsersManagementUsecaseSpec",()=>{
                 "youssef.khiari@sesame.com.tn",
                 "0000100"
             ))).resolves.toStrictEqual(
-                new DomainError("User with such login not found",DomainErrorType.InvalidLogin)
+                new DomainError("Invalid login credentials !",DomainErrorType.InvalidLogin)
             )
         });
         it('should fail with an missing email domain error', async function () {
