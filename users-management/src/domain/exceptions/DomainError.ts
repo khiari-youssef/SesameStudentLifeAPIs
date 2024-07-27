@@ -15,4 +15,5 @@ export class DomainError extends Error{
         super(message);
         this.type = type
     }
+
 }

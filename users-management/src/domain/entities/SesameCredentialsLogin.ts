@@ -14,7 +14,7 @@ export class SesameCredentialsLogin{
     }
 
      isEmailRequiredConstraintValid() : boolean {
-        return this.email.trim().length > 0
+        return this.email.trim().length > 0 && this.email.endsWith("@sesame.com.tn")
     }
     isEmailDomainConstraintValid() : boolean {
         return this.email.endsWith("@sesame.com.tn")

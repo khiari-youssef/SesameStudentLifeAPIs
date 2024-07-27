@@ -5,6 +5,8 @@ import {SesameCredentialsLogin} from "../../domain/entities/SesameCredentialsLog
 import {SesameUser} from "../../domain/entities/SesameUser";
 import {LoginResponse} from "../../application/responsePayloads/LoginResponse";
 import {AuthService} from "./AuthService";
+import { DomainError,DomainErrorType } from 'users-management/src/domain/exceptions/DomainError';
+
 
 @Injectable()
 export class AuthServiceImpl implements AuthService{
@@ -28,7 +30,7 @@ export class AuthServiceImpl implements AuthService{
                         accessToken
                     );
                 } else {
-                    throw result
+                    throw new DomainError("Invalid login credentials !",DomainErrorType.InvalidLogin);
                 }
             }
         )
