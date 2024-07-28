@@ -4,6 +4,7 @@ import {EnrollmentResult} from "../entities/EnrollmentResult";
 import{EnrollmentRepositoryContract} from "../../infrastructure/data/repositories/EnrollmentRepository"
 import {DomainError, DomainErrorType} from "../exceptions/DomainError";
 import {ValidationService} from "../../../../core/src/utilities/validation_service";
+import {IdentifierGeneratorService} from "../../../../core/src/infrastructure/services/IdentifierGeneratorService";
 
 
 @Injectable()
@@ -11,6 +12,7 @@ export class UserEnrollmentUseCase {
 
     constructor(
         @Inject('EnrollmentRepositoryContract') private readonly  repositoryContract: EnrollmentRepositoryContract,
+        @Inject("IdentifierGeneratorService") private readonly identifierGeneratorService : IdentifierGeneratorService
      ){
  
      }
@@ -23,9 +25,11 @@ export class UserEnrollmentUseCase {
             if (!existingApplication){
                 throw new DomainError(DomainErrorType.AlreadyInUse,`someone using this email: ${enrollmentForm.personalEmail} is already registered !`)
             } else {
+                let enrollmentFormId = await this.identifierGeneratorService.generate(`${new Date().toISOString()}-${enrollmentForm.personalEmail}`);
+                console.log(enrollmentFormId);
                return  await this.repositoryContract.saveEnrollment(
                     enrollmentForm,
-                    `${new Date().toISOString()}-${enrollmentForm.personalEmail}`
+                   enrollmentFormId
                 );
             }
           }

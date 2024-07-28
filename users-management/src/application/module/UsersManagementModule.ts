@@ -5,10 +5,13 @@ import {UserEnrollmentUseCase} from "../../domain/usecases/UserEnrollmentUseCase
 import {UsersRepository,} from "../../infrastructure/data/repositories/UsersRepository";
 import {EnrollmentRepository} from "../../infrastructure/data/repositories/EnrollmentRepository";
 import {EnrollmentFormMapper} from "../../infrastructure/ports/EnrollmentFormMapper";
+import {CoreModule} from "../../../../core/src/module/CoreModule";
 
 
 @Module({
-    imports : [],
+    imports : [
+        CoreModule
+    ],
     providers : [
         {
         provide: 'UsersRepositoryContract',

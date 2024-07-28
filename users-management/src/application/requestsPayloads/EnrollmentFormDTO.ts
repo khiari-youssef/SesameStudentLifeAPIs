@@ -1,4 +1,4 @@
-import {IsDate, IsEmail, IsNotEmpty, IsNumber} from "class-validator";
+import {IsEmail, IsNotEmpty, } from "class-validator";
 
 
 
@@ -9,14 +9,13 @@ export class EnrollmentFormDTO{
     @IsNotEmpty()
     personalEmail : string
 
-    @IsNumber()
     @IsNotEmpty()
     phone : string
 
     @IsNotEmpty()
     sex : string
 
-    @IsDate()
+    @IsNotEmpty()
     birthDate : string
 
     @IsNotEmpty()

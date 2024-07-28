@@ -1,4 +1,4 @@
-import {Body, Controller, Get, HttpStatus, Post, Query, Res, ValidationPipe} from "@nestjs/common";
+import {Body, Controller, Get, Post, Query, Res} from "@nestjs/common";
 import { EnrollmentForm } from "users-management/src/domain/entities/EnrollmentForm";
 import { EnrollmentResult } from "users-management/src/domain/entities/EnrollmentResult";
 import { UserEnrollmentUseCase } from "users-management/src/domain/usecases/UserEnrollmentUseCase";
@@ -6,6 +6,7 @@ import {DomainError} from "../../domain/exceptions/DomainError";
 import {Response} from "express";
 import {EnrollmentFormDTO} from "../requestsPayloads/EnrollmentFormDTO";
 import {EnrollmentFormMapper} from "../../infrastructure/ports/EnrollmentFormMapper";
+import {IsEmail, IsNotEmpty} from "class-validator";
 
 
 
@@ -46,6 +47,13 @@ export class UsersRegistrationController {
         @Query("lastName") lastName: string
     ): Promise<EnrollmentFormDTO> {
       return undefined;
+    }
+
+    @Post('candidacy/verify-email')
+    async verifyEmailOwnership(
+        @Body() body : {@IsEmail() @IsNotEmpty() email: string, @IsNotEmpty() code: string}
+    ): Promise<EnrollmentFormDTO> {
+        return undefined;
     }
 
 }

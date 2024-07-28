@@ -11,7 +11,8 @@ import {Injectable} from "@nestjs/common";
 export class EnrollmentFormMapper implements DomainToExternalEntityMapper<EnrollmentForm,EnrollmentFormDTO> {
 
     toDomainEntity(external: EnrollmentFormDTO): EnrollmentForm {
-        if (!(external.sex.toLowerCase() in ['f','m'])) {
+        let hasValidSex : boolean = external.sex.toLowerCase() == 'm' || external.sex.toLowerCase() == 'f'
+        if (!hasValidSex) {
             throw new EntityMappingException("sex","external.sex","parse error !");
         }
        return new EnrollmentForm(
