@@ -4,6 +4,7 @@ import {UserLoginUsecase} from "../../domain/usecases/UserLoginUsecase";
 import {UserEnrollmentUseCase} from "../../domain/usecases/UserEnrollmentUseCase";
 import {UsersRepository,} from "../../infrastructure/data/repositories/UsersRepository";
 import {EnrollmentRepository} from "../../infrastructure/data/repositories/EnrollmentRepository";
+import {EnrollmentFormMapper} from "../../infrastructure/ports/EnrollmentFormMapper";
 
 
 @Module({
@@ -18,7 +19,8 @@ import {EnrollmentRepository} from "../../infrastructure/data/repositories/Enrol
         useValue: new EnrollmentRepository()
       },
     UserLoginUsecase,
-    UserEnrollmentUseCase
+    UserEnrollmentUseCase,
+    EnrollmentFormMapper
 ],
    controllers : [UsersRegistrationController],
     exports : [UserLoginUsecase,UserEnrollmentUseCase]

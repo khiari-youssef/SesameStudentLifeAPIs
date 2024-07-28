@@ -2,6 +2,7 @@ import {NestFactory} from '@nestjs/core';
 import {AppModule} from './app.module';
 import {LogConfigDev, LogConfigProd, LogConfigStaging} from "../../config/AppConfiguration";
 import {NestApplicationOptions} from "@nestjs/common/interfaces/nest-application-options.interface";
+import {HttpStatus, ValidationPipe} from "@nestjs/common";
 
 
 async function bootstrap() {
@@ -13,7 +14,9 @@ async function bootstrap() {
 );
   const port = process.env.SERVER_PORT || 3000
   const host = process.env.SERVER_HOST || 'localhost'
-
+  app.useGlobalPipes(new ValidationPipe({
+    errorHttpStatusCode : HttpStatus.BAD_REQUEST
+  }));
   await app.listen(port,host,()=>{
     console.log("path  " +process.env.SSL_PRIVATE_KEY_PATH)
      console.log(`Server running on ${host}:${port} with ${process.env.NODE_ENV} environment`)

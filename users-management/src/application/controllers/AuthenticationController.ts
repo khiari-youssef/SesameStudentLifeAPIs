@@ -14,10 +14,7 @@ export class AuthenticationController {
     }
 
     @Post('credentials')
-    async loginUser(@Body(new ValidationPipe({
-        expectedType: LoginCredentials,
-        errorHttpStatusCode : HttpStatus.BAD_REQUEST,
-    })) loginCredentials : LoginCredentials,@Res() response: Response): Promise<LoginResponse | void> {
+    async loginUser(@Body() loginCredentials : LoginCredentials,@Res() response: Response): Promise<LoginResponse | void> {
 
         const domainLogin =  new SesameCredentialsLogin(
             loginCredentials.email,loginCredentials.password

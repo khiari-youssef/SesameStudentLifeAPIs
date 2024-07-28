@@ -4,22 +4,23 @@ import { EnrollmentResult } from "users-management/src/domain/entities/Enrollmen
 import { UserEnrollmentUseCase } from "users-management/src/domain/usecases/UserEnrollmentUseCase";
 import {DomainError} from "../../domain/exceptions/DomainError";
 import {Response} from "express";
+import {EnrollmentFormDTO} from "../requestsPayloads/EnrollmentFormDTO";
+import {EnrollmentFormMapper} from "../../infrastructure/ports/EnrollmentFormMapper";
 
 
 
 @Controller('registration')
 export class UsersRegistrationController {
     constructor(
-        private readonly enrollmentUseCase: UserEnrollmentUseCase
+        private readonly enrollmentUseCase: UserEnrollmentUseCase,
+        private readonly mapper : EnrollmentFormMapper
     ) {}
 
 
     @Post('candidacy/enroll')
-    async enrollCandidateUser(@Body(new ValidationPipe({
-        expectedType: EnrollmentForm,
-        errorHttpStatusCode : HttpStatus.BAD_REQUEST,
-    })) enrollmentForm : EnrollmentForm,@Res() response: Response): Promise<EnrollmentResult | void> {
+    async enrollCandidateUser(@Body() enrollmentFormDTO : EnrollmentFormDTO,@Res() response: Response): Promise<EnrollmentResult | void> {
             try {
+                let enrollmentForm : EnrollmentForm = this.mapper.toDomainEntity(enrollmentFormDTO);
                 let result : EnrollmentResult = await this.enrollmentUseCase.execute(enrollmentForm)
                 response.status(200).send(result);
             } catch (error){
@@ -27,7 +28,7 @@ export class UsersRegistrationController {
                     response.status(400).send({
                         "error_code" : error.type.toString(),
                         "error_message" : error.message,
-                        "details" : enrollmentForm
+                        "details" : enrollmentFormDTO
                     });
                 }  else {
                     response.status(500).send({
@@ -43,8 +44,8 @@ export class UsersRegistrationController {
         @Query("candidatureID") candidatureID : string,
         @Query("firstName") firstName : string,
         @Query("lastName") lastName: string
-    ): Promise<EnrollmentResult | void> {
-
+    ): Promise<EnrollmentFormDTO> {
+      return undefined;
     }
 
 }

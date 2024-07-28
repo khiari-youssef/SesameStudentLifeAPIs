@@ -16,7 +16,7 @@ export class EnrollmentForm{
     programId : string
     status : EnrollmentStatus
 
-    EnrollmentForm(
+    constructor(
      personalEmail : string,
     phone : string,
     sex : UserSex,
