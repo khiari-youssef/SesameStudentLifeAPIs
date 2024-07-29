@@ -1,4 +1,4 @@
-import {Body, Controller, Get, Post, Query, Res} from "@nestjs/common";
+import {Body, Controller, Get, Inject, Post, Query, Res} from "@nestjs/common";
 import { EnrollmentForm } from "users-management/src/domain/entities/EnrollmentForm";
 import { EnrollmentResult } from "users-management/src/domain/entities/EnrollmentResult";
 import { UserEnrollmentUseCase } from "users-management/src/domain/usecases/UserEnrollmentUseCase";
@@ -6,7 +6,8 @@ import {DomainError} from "../../domain/exceptions/DomainError";
 import {Response} from "express";
 import {EnrollmentFormDTO} from "../requestsPayloads/EnrollmentFormDTO";
 import {EnrollmentFormMapper} from "../../infrastructure/ports/EnrollmentFormMapper";
-import {IsEmail, IsNotEmpty} from "class-validator";
+import {EmailVerificationRequest} from "../../../../core/src/application/http/response/EmailVerificationRequest";
+import {EmailVerificationService} from "../../../../core/src/infrastructure/services/EmailVerificationService";
 
 
 
@@ -14,7 +15,8 @@ import {IsEmail, IsNotEmpty} from "class-validator";
 export class UsersRegistrationController {
     constructor(
         private readonly enrollmentUseCase: UserEnrollmentUseCase,
-        private readonly mapper : EnrollmentFormMapper
+        private readonly mapper : EnrollmentFormMapper,
+      @Inject("EmailVerificationService")  private readonly emailVerificationService : EmailVerificationService
     ) {}
 
 
@@ -51,9 +53,22 @@ export class UsersRegistrationController {
 
     @Post('candidacy/verify-email')
     async verifyEmailOwnership(
-        @Body() body : {@IsEmail() @IsNotEmpty() email: string, @IsNotEmpty() code: string}
-    ): Promise<EnrollmentFormDTO> {
-        return undefined;
+        @Body() emailVerificationRequest : EmailVerificationRequest,
+        @Res() response: Response
+    ): Promise<void> {
+        let isSent : boolean = await this.emailVerificationService.sendVerificationEmail(
+             emailVerificationRequest.email,
+             emailVerificationRequest.code
+         )
+        if (isSent) {
+            response.status(200).send({
+                "status" : "Email sent successfully !"
+            })
+        } else {
+            response.status(400).send({
+                "status" : "Could not send email ! try again"
+            })
+        }
     }
 
 }

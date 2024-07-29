@@ -1,4 +1,5 @@
-import {IsEmail, IsNotEmpty, } from "class-validator";
+import {IsEmail, IsMobilePhone,IsNotEmpty} from "class-validator";
+
 
 
 
@@ -9,6 +10,7 @@ export class EnrollmentFormDTO{
     @IsNotEmpty()
     personalEmail : string
 
+    @IsMobilePhone()
     @IsNotEmpty()
     phone : string
 
